@@ -1,10 +1,18 @@
 const express = require("express");
 const path = require("path");
+require("dotenv").config();
+const mongoose = require("mongoose");
+mongoose.connect(process.env.DATABASE);
+
+const Tour = mongoose.model("Tour", {
+    name: String,
+    vehicle: String,
+});
 const app = express();
 const port = 3000;
 
 // THIẾT LẬP THƯ MỤC VIEWS VÀ VIEW ENGINE PUG
-app.set("views", path.join(__dirname, "views")); // Thư mục cứa file Pug
+app.set("views", path.join(__dirname, "views")); // Thư mục chứa file Pug
 
 app.set("view engine", "pug"); // Thiết lập pug làm view engine
 
@@ -17,9 +25,12 @@ app.get("/", (req, res) => {
     }); // Ko can them view/ do co app.set view o tren roi
 });
 
-app.get("/tours", (req, res) => {
+app.get("/tours", async (req, res) => {
+    const tourList = await Tour.find({});
+    console.log(tourList);
     res.render("client/pages/tour-list", {
         pageTitle: "Tour List",
+        tourList: tourList,
     });
 });
 
