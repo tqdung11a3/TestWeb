@@ -8,6 +8,9 @@ app.set("views", path.join(__dirname, "views")); // Thư mục cứa file Pug
 
 app.set("view engine", "pug"); // Thiết lập pug làm view engine
 
+// THIET LAP THU MUC CHUA FILE TINH
+app.use(express.static(path.join(__dirname, "public")));
+
 app.get("/", (req, res) => {
     res.render("client/pages/home", {
         pageTitle: "Home page",
