@@ -7,8 +7,7 @@ mongoose.connect(process.env.DATABASE);
 // DO ĐOẠN NÀY ĐƯỢC TÁCH RA FOLDER MODAL RỒI NÊN KO CẦN NỮA
 // const Tour = require("./models/tour.model");
 
-const homeController = require("./controllers/client/home.controller");
-const tourController = require("./controllers/client/tour.controller");
+const clientRoutes = require("./routes/client/index.route");
 
 const app = express();
 const port = 3000;
@@ -21,10 +20,8 @@ app.set("view engine", "pug"); // Thiết lập pug làm view engine
 // THIET LAP THU MUC CHUA FILE TINH
 app.use(express.static(path.join(__dirname, "public")));
 
-// FUNCTION CHUYỂN THÀNH homeController.home
-app.get("/", homeController.home);
-
-app.get("/tours", tourController.list);
+// THIẾT LẬP ĐƯỜNG DẪN
+app.use("/", clientRoutes);
 
 app.listen(port, () => {
     console.log(`Website đang chạy trên cổng ${port}`);
