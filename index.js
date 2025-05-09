@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 require("dotenv").config();
 const database = require("./config/database");
-
+const variableConfig = require("./config/variable");
 // DO ĐOẠN NÀY ĐƯỢC TÁCH RA FOLDER MODAL RỒI NÊN KO CẦN NỮA
 // const Tour = require("./models/tour.model");
 
@@ -23,8 +23,11 @@ app.set("view engine", "pug"); // Thiết lập pug làm view engine
 // THIET LAP THU MUC CHUA FILE TINH
 app.use(express.static(path.join(__dirname, "public")));
 
+// Tạo biến toàn cục trong file Pug
+app.locals.pathAdmin = variableConfig.pathAdmin;
+
 // THIẾT LẬP ĐƯỜNG DẪN
-app.use("/admin", adminRoutes);
+app.use(`/${variableConfig.pathAdmin}`, adminRoutes);
 app.use("/", clientRoutes);
 
 app.listen(port, () => {
