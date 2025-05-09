@@ -6,6 +6,7 @@ const database = require("./config/database");
 // DO ĐOẠN NÀY ĐƯỢC TÁCH RA FOLDER MODAL RỒI NÊN KO CẦN NỮA
 // const Tour = require("./models/tour.model");
 
+const adminRoutes = require("./routes/admin/index.route");
 const clientRoutes = require("./routes/client/index.route");
 
 const app = express();
@@ -23,6 +24,7 @@ app.set("view engine", "pug"); // Thiết lập pug làm view engine
 app.use(express.static(path.join(__dirname, "public")));
 
 // THIẾT LẬP ĐƯỜNG DẪN
+app.use("/admin", adminRoutes);
 app.use("/", clientRoutes);
 
 app.listen(port, () => {
