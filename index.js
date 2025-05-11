@@ -26,6 +26,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // Tạo biến toàn cục trong file Pug
 app.locals.pathAdmin = variableConfig.pathAdmin;
 
+// Cho phep gui data len dang json
+app.use(express.json());
+
 // THIẾT LẬP ĐƯỜNG DẪN
 app.use(`/${variableConfig.pathAdmin}`, adminRoutes);
 app.use("/", clientRoutes);

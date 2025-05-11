@@ -1,3 +1,5 @@
+const AccountAdmin = require("../../models/account-admin.model");
+
 module.exports.login = async (req, res) => {
     res.render("admin/pages/login", {
         pageTitle: "Login page",
@@ -7,6 +9,44 @@ module.exports.login = async (req, res) => {
 module.exports.register = async (req, res) => {
     res.render("admin/pages/register", {
         pageTitle: "Register page",
+    }); // Ko can them view/ do co app.set view o tren roi
+};
+
+module.exports.registerPost = async (req, res) => {
+    const { fullName, email, password } = req.body;
+
+    // email 1: email dinh nghia trg schema trong model, email 2 la email gui len
+    const existAccount = await AccountAdmin.findOne({
+        email: email,
+    });
+
+    if (existAccount) {
+        res.json({
+            code: "error",
+            message: "Email da ton tai trong he thong",
+        });
+        return;
+    }
+
+    // Neu chua co email trg he thong, cho phep tao tai khoan
+    const newAccount = new AccountAdmin({
+        fullName: fullName,
+        email: email,
+        password: password,
+        status: "initial",
+    });
+
+    await newAccount.save();
+
+    res.json({
+        code: "success",
+        message: "Dang ky tai khoan thanh cong",
+    });
+};
+
+module.exports.registerInitial = async (req, res) => {
+    res.render("admin/pages/register-initial", {
+        pageTitle: "Tai khoan da dc khoi tao",
     }); // Ko can them view/ do co app.set view o tren roi
 };
 
