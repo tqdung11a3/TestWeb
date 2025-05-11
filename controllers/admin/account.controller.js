@@ -13,17 +13,17 @@ module.exports.register = async (req, res) => {
 module.exports.forgotPassword = async (req, res) => {
     res.render("admin/pages/forgot-password", {
         pageTitle: "Forgot password page",
-    }); // Ko can them view/ do co app.set view o tren roi
+    });
 };
 
 module.exports.otpPassword = async (req, res) => {
     res.render("admin/pages/otp-password", {
         pageTitle: "Otp password page",
-    }); // Ko can them view/ do co app.set view o tren roi
+    });
 };
 
 module.exports.resetPassword = async (req, res) => {
     res.render("admin/pages/reset-password", {
         pageTitle: "Reset password page",
-    }); // Ko can them view/ do co app.set view o tren roi
+    });
 };
