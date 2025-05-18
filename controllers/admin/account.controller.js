@@ -1,5 +1,6 @@
 const AccountAdmin = require("../../models/account-admin.model");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 module.exports.login = async (req, res) => {
     res.render("admin/pages/login", {
@@ -45,6 +46,25 @@ module.exports.loginPost = async (req, res) => {
         });
         return;
     }
+
+    // Tao JWT
+    const token = jwt.sign(
+        {
+            id: existAccount.id,
+            email: existAccount.email,
+        },
+        process.env.JWT_SECRET,
+
+        {
+            expiresIn: "1d", // Token co thoi han 1 ngay
+        }
+    );
+
+    res.cookie("token", token, {
+        maxAge: 24 * 60 * 60 * 1000, // token luu trong cokie 1 ngay
+        httpOnly: true, // Chi cho phep server dc truy cap cookie nay
+        sameSite: "strict", // Ko gui dc yeu cau tu website khac
+    });
 
     res.json({
         code: "success",
