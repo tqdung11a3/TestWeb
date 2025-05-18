@@ -7,6 +7,51 @@ module.exports.login = async (req, res) => {
     }); // Ko can them view/ do co app.set view o tren roi
 };
 
+module.exports.loginPost = async (req, res) => {
+    const { email, password } = req.body;
+
+    // Ktra xem email co ton tai hay ko
+    const existAccount = await AccountAdmin.findOne({
+        email: email,
+    });
+
+    if (!existAccount) {
+        res.json({
+            code: "error",
+            message: "Email ko ton tai trong he thong",
+        });
+        return;
+    }
+
+    // Ktra mat khau co dung hay ko
+    const isPasswordValid = await bcrypt.compare(
+        password,
+        existAccount.password
+    );
+
+    if (!isPasswordValid) {
+        res.json({
+            code: "error",
+            message: "Mat khau ko dung",
+        });
+        return;
+    }
+
+    // ktra tai khoan da dc kich hoat hay chua
+    if (existAccount.status != "active") {
+        res.json({
+            code: "error",
+            message: "Tai khoan chua dc kich hoat",
+        });
+        return;
+    }
+
+    res.json({
+        code: "success",
+        message: "Dang nhap tai khoan thanh cong",
+    });
+};
+
 module.exports.register = async (req, res) => {
     res.render("admin/pages/register", {
         pageTitle: "Register page",
@@ -32,6 +77,8 @@ module.exports.registerPost = async (req, res) => {
     // Ma hoa mat khau voi bcrypt
     const salt = await bcrypt.genSalt(10); // Tao chuoi ngau nhien co 10 ky tu
     const hashedPassword = await bcrypt.hash(password, salt);
+
+    console.log("Chay vao controller");
 
     // Neu chua co email trg he thong, cho phep tao tai khoan
     const newAccount = new AccountAdmin({
