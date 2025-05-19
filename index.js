@@ -9,6 +9,8 @@ const variableConfig = require("./config/variable");
 const adminRoutes = require("./routes/admin/index.route");
 const clientRoutes = require("./routes/client/index.route");
 
+const cookieParser = require("cookie-parser");
+
 const app = express();
 const port = 3000;
 
@@ -26,8 +28,14 @@ app.use(express.static(path.join(__dirname, "public")));
 // Tạo biến toàn cục trong file Pug
 app.locals.pathAdmin = variableConfig.pathAdmin;
 
+// Tao bien toan cuc trong cac file js backend
+global.pathAdmin = variableConfig.pathAdmin;
+
 // Cho phep gui data len dang json
 app.use(express.json());
+
+// Su dung cookieParser
+app.use(cookieParser());
 
 // THIẾT LẬP ĐƯỜNG DẪN
 app.use(`/${variableConfig.pathAdmin}`, adminRoutes);
