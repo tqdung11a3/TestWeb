@@ -139,3 +139,11 @@ module.exports.resetPassword = async (req, res) => {
         pageTitle: "Reset password page",
     });
 };
+
+module.exports.logoutPost = async (req, res) => {
+    res.clearCookie("token");
+    res.json({
+        code: "success",
+        message: "Dang xuat thanh cong",
+    });
+};
